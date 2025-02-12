@@ -53,5 +53,30 @@ class Cell():
         if self.has_bottom_wall:
             self._win._Window__canvas.create_line(self._x1, self._y2, self._x2, self._y2, fill = "black", width = 2)
 
+    def draw_move(self, to_cell, undo = False):
+        assert self._x1 is not None and self._x2 is not None
+        assert self._y1 is not None and self._y2 is not None
+
+        src_middle_point = Point((self._x1 + self._x2) / 2, (self._y1 + self._y2) / 2)
+        dest_middle_point = Point((to_cell._x1 + to_cell._x2) / 2, (to_cell._y1 + to_cell._y2) / 2)
+        
+        line = Line(src_middle_point, dest_middle_point)
+        
+        color = "red"
+        if undo == True:
+            color = "gray"
+
+        self._win.draw_line(line, color)
+
+
+
+
+
+
+
+
+
+
+
 
 

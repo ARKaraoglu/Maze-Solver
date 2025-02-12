@@ -20,22 +20,30 @@ def main():
    # line2 = Line(point3, point4)
    #
    # win.draw_line(line1, "black")
-    cell1 = Cell(win)
-    cell1.has_top_wall = False
-
-    cell2 = Cell(win)
-    cell2.has_top_wall = False
-
-    cell3 = Cell(win)
-    cell3.has_bottom_wall = False
-
-    cell4 = Cell(win)
-    cell4.has_right_wall = False
-
-    cell1.draw(100, 100, 200, 200) 
-    cell2.draw(300, 300, 500, 500)
+    # cell1 = Cell(win)
+    # cell1.has_top_wall = False
+    #
+    # cell2 = Cell(win)
+    # cell2.has_top_wall = False
+    #
+    # cell3 = Cell(win)
+    # cell3.has_bottom_wall = False
+    #
+    # cell4 = Cell(win)
+    # cell4.has_right_wall = False
+    #
+    # cell1.draw(100, 100, 200, 200) 
+    # cell2.draw(300, 300, 500, 500)
     # cell3.draw(500, 800, 600, 1000)
     # cell4.draw(50, 50, 100, 100)
+    
+    cell1 = Cell(win)
+    cell2 = Cell(win)
+
+    cell1.draw(100, 100, 200, 200)
+    cell2.draw(300, 100, 400, 200)
+
+    cell1.draw_move(cell2, undo = True)
 
     win.wait_for_close()
 
