@@ -2,6 +2,7 @@ from window import Window
 from point import Point
 from line import Line
 from cell import Cell
+from maze import Maze
 
 def main():
     win = Window(800, 600)
@@ -37,13 +38,19 @@ def main():
     # cell3.draw(500, 800, 600, 1000)
     # cell4.draw(50, 50, 100, 100)
     
-    cell1 = Cell(win)
-    cell2 = Cell(win)
+    # cell1 = Cell(win)
+    # cell2 = Cell(win)
+    #
+    # cell1.draw(100, 100, 200, 200)
+    # cell2.draw(300, 100, 400, 200)
+    #
+    # cell1.draw_move(cell2, undo = True)
+    
+    # cell1 = Cell(win)
+    #
+    # cell1.draw(100, 100, 500, 200)
+    maze = Maze(x1 = 100, y1 = 100, num_rows = 5, num_cols = 8, cell_size_x = 75, cell_size_y = 75, win = win)
 
-    cell1.draw(100, 100, 200, 200)
-    cell2.draw(300, 100, 400, 200)
-
-    cell1.draw_move(cell2, undo = True)
 
     win.wait_for_close()
 

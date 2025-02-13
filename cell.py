@@ -1,4 +1,3 @@
-from window import Window
 from point import Point
 from line import Line
 
