@@ -51,7 +51,6 @@ def main():
     # cell1.draw(100, 100, 500, 200)
     maze = Maze(x1 = 100, y1 = 100, num_rows = 5, num_cols = 8, cell_size_x = 75, cell_size_y = 75, win = win)
 
-
     win.wait_for_close()
 
 

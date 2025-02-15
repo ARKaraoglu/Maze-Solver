@@ -3,7 +3,7 @@ from line import Line
 from cell import Cell
 import time
 class Maze():
-    def __init__(self, x1, y1, num_rows, num_cols, cell_size_x, cell_size_y, win):
+    def __init__(self, x1, y1, num_rows, num_cols, cell_size_x, cell_size_y, win, seed):
         self._x1 = x1
         self._y1 = y1
         self._num_rows = num_rows
@@ -11,8 +11,9 @@ class Maze():
         self._cell_size_x = cell_size_x
         self._cell_size_y = cell_size_y
         self._win = win
+        self._seed = seed
         self._create_cells()
-
+        self._break_entrance_and_exit()
 
         # tl_point = Point(current_x, current_y)
         # tr_point = Point(current_x + self._cell_size_x, current_y)
@@ -35,6 +36,7 @@ class Maze():
 
         for row in range(0, self._num_rows):
             for col in range(0, self._num_cols):
+                pass
                 self._draw_cell(row, col)
 
 
@@ -53,13 +55,32 @@ class Maze():
         self._animate()
 
     def _animate(self):
+        # assert self._win is not None
         self._win.redraw()
         time.sleep(0.05)
+
+    def _break_entrance_and_exit(self):
+        # row_len = len(self._cells)
+        # col_len = len(self._cells[row_len - 1])
+        #
+        # entrance_cell = self._cells[row_len - row_len][0]
+        # exit_cell = self._cells[row_len - 1][col_len - 1]
+        # entrance_cell.has_top_wall = False
+        # exit_cell.has_bottom_wall = False
+        # 
+        # print(self._cells[row_len - row_len][0].__repr__())
+        # print(self._cells[row_len - 1][col_len - 1].__repr__())
+        # entrance_cell.draw(entrance_cell._x1, entrance_cell._y1, entrance_cell._x2, entrance_cell._y2)
+        # exit_cell.draw(exit_cell._x1, exit_cell._y1, exit_cell._x2, exit_cell._y2)
         
+        row_len = len(self._cells)
+        col_len = len(self._cells[row_len - 1])
 
-
+        self._cells[0][0].has_top_wall = False
+        self._cells[row_len - 1][col_len - 1].has_bottom_wall = False
         
-
+        self._draw_cell(0, 0)
+        self._draw_cell(row_len - 1, col_len - 1)
 
                 
 
