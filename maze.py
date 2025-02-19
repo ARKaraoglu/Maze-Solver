@@ -2,8 +2,10 @@ from point import Point
 from line import Line
 from cell import Cell
 import time
+import random
+
 class Maze():
-    def __init__(self, x1, y1, num_rows, num_cols, cell_size_x, cell_size_y, win, seed):
+    def __init__(self, x1, y1, num_rows, num_cols, cell_size_x, cell_size_y, win, seed = None):
         self._x1 = x1
         self._y1 = y1
         self._num_rows = num_rows
@@ -12,8 +14,13 @@ class Maze():
         self._cell_size_y = cell_size_y
         self._win = win
         self._seed = seed
+
+        if self._seed is not None:
+            random.seed(self._seed)
+
         self._create_cells()
         self._break_entrance_and_exit()
+        self._break_walls_r(i = 0, j = 0)
 
         # tl_point = Point(current_x, current_y)
         # tr_point = Point(current_x + self._cell_size_x, current_y)
@@ -81,6 +88,47 @@ class Maze():
         
         self._draw_cell(0, 0)
         self._draw_cell(row_len - 1, col_len - 1)
+
+
+    def _break_walls_r(self, i, j):
+        self._cells[i][j]._visited = True
+
+        while True:
+            to_visit = []
+
+            if i > 0 and self._cells[i - 1][j]._visited == False: # Above 1
+                to_visit.append([i - 1, j])
+
+            if i + 1 != len(self._cells) and self._cells[i + 1][j]._visited == False: # Below 1
+                to_visit.append([i + 1, j])
+
+            if j > 0 and self._cells[i][j - 1]._visited == False: # Left 1
+                to_visit.append([i, j - 1])
+
+            if j + 1 != len(self._cells[0]) and self._cells[i][j + 1]._visited == False: # Right 1
+                to_visit.append([i, j + 1])
+
+            if len(to_visit) == 0:
+                self._draw_cell(i, j)
+                return
+            else:
+                next_random_cell = random.choice(to_visit)
+                if i == next_random_cell[0]:
+                    if j < next_random_cell[1]:
+                        self._cells[i][j].has_right_wall = False
+                        self._cells[next_random_cell[0]][next_random_cell[1]].has_left_wall = False
+                    else:
+                        self._cells[i][j].has_left_wall = False
+                        self._cells[next_random_cell[0]][next_random_cell[1]].has_right_wall = False
+                else:
+                    if i < next_random_cell[0]:
+                        self._cells[i][j].has_bottom_wall = False
+                        self._cells[next_random_cell[0]][next_random_cell[1]].has_top_wall = False
+ 
+                    else:
+                        self._cells[i][j].has_top_wall = False
+                        self._cells[next_random_cell[0]][next_random_cell[1]].has_bottom_wall = False
+                self._break_walls_r(i = next_random_cell[0], j = next_random_cell[1])
 
                 
 
