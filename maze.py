@@ -16,12 +16,12 @@ class Maze():
         self._seed = seed
 
         if self._seed is not None:
-            random.seed(self._seed)
+            random.seed(seed)
 
         self._create_cells()
         self._break_entrance_and_exit()
         self._break_walls_r(i = 0, j = 0)
-
+        self._reset_cells_visited()
         # tl_point = Point(current_x, current_y)
         # tr_point = Point(current_x + self._cell_size_x, current_y)
         # bl_point = Point(current_x, current_y + self._cell_size_y)
@@ -56,33 +56,16 @@ class Maze():
         cell_x2 = cell_x1 + self._cell_size_x
         cell_y2 = cell_y1 + self._cell_size_y
 
-        # cell = Cell(self._win)
-        # print(f"Row:{i},Col: {j}, tl_x1:{cell_x1}, tl_y1:{cell_y1}, br_x2:{cell_x2}, br_y2:{cell_y2}")
         self._cells[i][j].draw(cell_x1, cell_y1, cell_x2, cell_y2)
         self._animate()
 
     def _animate(self):
-        # assert self._win is not None
         self._win.redraw()
         time.sleep(0.05)
 
     def _break_entrance_and_exit(self):
-        # row_len = len(self._cells)
-        # col_len = len(self._cells[row_len - 1])
-        #
-        # entrance_cell = self._cells[row_len - row_len][0]
-        # exit_cell = self._cells[row_len - 1][col_len - 1]
-        # entrance_cell.has_top_wall = False
-        # exit_cell.has_bottom_wall = False
-        # 
-        # print(self._cells[row_len - row_len][0].__repr__())
-        # print(self._cells[row_len - 1][col_len - 1].__repr__())
-        # entrance_cell.draw(entrance_cell._x1, entrance_cell._y1, entrance_cell._x2, entrance_cell._y2)
-        # exit_cell.draw(exit_cell._x1, exit_cell._y1, exit_cell._x2, exit_cell._y2)
-        
         row_len = len(self._cells)
         col_len = len(self._cells[row_len - 1])
-
         self._cells[0][0].has_top_wall = False
         self._cells[row_len - 1][col_len - 1].has_bottom_wall = False
         
@@ -130,7 +113,63 @@ class Maze():
                         self._cells[next_random_cell[0]][next_random_cell[1]].has_bottom_wall = False
                 self._break_walls_r(i = next_random_cell[0], j = next_random_cell[1])
 
+
+    def _reset_cells_visited(self):
+        for row in self._cells:
+            for col in row:
+                col._visited = False
+    
+    def _solve(self):
+        return self._solve_r(i = 0, j = 0)
+
+    
+    def _solve_r(self,i, j):
+        self._animate()
+        current_cell = self._cells[i][j]
+        current_cell._visited = True
+
+        if i == len(self._cells) - 1 and j == len(self._cells[0]) - 1:
+            return True
+
+        #Up
+        if i != 0 and current_cell.has_top_wall == False:
+            if self._cells[i - 1][j]._visited == False:
+                current_cell.draw_move(self._cells[i - 1][j])
+                if self._solve_r(i - 1, j):
+                    return True
+                current_cell.draw_move(self._cells[i - 1][j], undo = True)
                 
+        #Down
+        if i != len(self._cells) - 1 and current_cell.has_bottom_wall == False:
+            if self._cells[i + 1][j]._visited == False:
+                current_cell.draw_move(self._cells[i + 1][j])
+                if self._solve_r(i + 1, j):
+                    return True
+                current_cell.draw_move(self._cells[i + 1][j], undo = True)
+        #Right
+        if j != len(self._cells[0]) and current_cell.has_right_wall == False:
+            if self._cells[i][j + 1]._visited == False:
+                current_cell.draw_move(self._cells[i][j + 1])
+                if self._solve_r(i, j + 1):
+                    return True
+                current_cell.draw_move(self._cells[i][j + 1], undo = True)
+        #Left
+        if j != 0 and current_cell.has_left_wall == False:
+            if self._cells[i][j - 1]._visited == False:
+                current_cell.draw_move(self._cells[i][j - 1])
+                if self._solve_r(i , j - 1):
+                    return True
+                current_cell.draw_move(self._cells[i][j - 1], undo = True)
+
+        return False
+
+
+
+
+
+
+
+
 
 
 
